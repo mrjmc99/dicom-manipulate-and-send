@@ -1,0 +1,5 @@
+pydicom
+python-gdcm
+pylibjpeg
+numpy
+pynetdicom
