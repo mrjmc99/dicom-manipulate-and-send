@@ -9,18 +9,29 @@ import pynetdicom
 from datetime import datetime
 from pynetdicom import AE, StoragePresentationContexts
 from pydicom.uid import ImplicitVRLittleEndian, ExplicitVRLittleEndian, JPEGBaseline, JPEGExtended
+import configparser
 
+# Get the absolute path of the script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the absolute path of the configuration file
+config_file_path = os.path.join(script_dir, "dicom-manipulate-and-send.ini")
+
+# Load the configuration file
+config = configparser.ConfigParser()
+config.read(config_file_path)
 
 # Constants and Configurations
-source_dicom_folder = r'C:\Software\python\600img-ct'
-remote_ip = '10.128.133.159'
-remote_port = 104
-remote_ae_title = 'AHEIAUX1'
-local_ae_title = 'SMMXSPEEDTEST'
-USE_MULTITHREAD = False  # Set to True if you want to use multithreading for sending
-MAX_CONCURRENT_THREADS = 10  # Change based on system capability
-CLEANUP_OUTPUT_FOLDER = True  # Set to True if you want to remove the output folder after sending
-USE_SINGLE_ASSOCIATION = True # Switch between dicom association for study (True) vs image (False)
+source_dicom_folder = config.get("source", "source_dicom_folder")
+local_ae_title = os.environ.get('COMPUTERNAME')
+remote_ip = config.get("destination", "ip")
+remote_port = config.get("destination", "port")
+remote_ae_title = config.get("destination", "ae_title")
+USE_MULTITHREAD = config.get("options", "USE_MULTITHREAD")
+MAX_CONCURRENT_THREADS = config.get("options", "MAX_CONCURRENT_THREADS")
+CLEANUP_OUTPUT_FOLDER = config.get("options", "CLEANUP_OUTPUT_FOLDER")
+USE_SINGLE_ASSOCIATION = config.get("options", "USE_SINGLE_ASSOCIATION")
+
 # Configure logging
 logging.basicConfig(filename='dicom_sender.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

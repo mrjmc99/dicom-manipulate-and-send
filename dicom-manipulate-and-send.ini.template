@@ -1,0 +1,13 @@
+[source]
+source_dicom_folder =
+
+[destination]
+ip =
+ae_title =
+port =
+
+[options]
+USE_MULTITHREAD = False
+MAX_CONCURRENT_THREADS = 10
+CLEANUP_OUTPUT_FOLDER = True
+USE_SINGLE_ASSOCIATION = True
