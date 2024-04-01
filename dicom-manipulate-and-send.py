@@ -25,10 +25,10 @@ config.read(config_file_path)
 source_dicom_folder = config.get("source", "source_dicom_folder")
 local_ae_title = os.environ.get('COMPUTERNAME')
 remote_ip = config.get("destination", "ip")
-remote_port = config.get("destination", "port")
+remote_port = int(config.get("destination", "port"))
 remote_ae_title = config.get("destination", "ae_title")
 USE_MULTITHREAD = config.get("options", "USE_MULTITHREAD")
-MAX_CONCURRENT_THREADS = config.get("options", "MAX_CONCURRENT_THREADS")
+MAX_CONCURRENT_THREADS = int(config.get("options", "MAX_CONCURRENT_THREADS"))
 CLEANUP_OUTPUT_FOLDER = config.get("options", "CLEANUP_OUTPUT_FOLDER")
 USE_SINGLE_ASSOCIATION = config.get("options", "USE_SINGLE_ASSOCIATION")
 
@@ -231,6 +231,7 @@ for dicom_filename in os.listdir(source_dicom_folder):
 
     ds.SOPInstanceUID = pydicom.uid.generate_uid()
     ds.AccessionNumber = start_time_formatted
+    print(f'Accession Number: {start_time_formatted}')
     # Ensure the filename ends with .dcm
     if not dicom_filename.lower().endswith('.dcm'):
         dicom_filename = f"{dicom_filename}.dcm"
